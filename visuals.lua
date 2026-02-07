@@ -1,7 +1,7 @@
 --[[
-@Name: Visuals Ultimate Fixed
-@Author: FoarteBine & Gemini
-@Version: Ultimate v3.1
+@Name: Visuals
+@Author: FoarteBine
+@Version: v3.1
 ]]
 
 local Module = {}
