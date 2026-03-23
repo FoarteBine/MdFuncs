@@ -3,23 +3,27 @@ local Module = {}
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
 
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "MdNotifications"
-ScreenGui.Parent = CoreGui
-ScreenGui.DisplayOrder = 999
+local ScreenGui = CoreGui:FindFirstChild("MdNotifications") or Instance.new("ScreenGui")
+if not ScreenGui.Parent then
+    ScreenGui.Name = "MdNotifications"
+    ScreenGui.Parent = CoreGui
+    ScreenGui.DisplayOrder = 999
+end
 
-local Container = Instance.new("Frame")
-Container.Name = "Container"
-Container.Parent = ScreenGui
-Container.Size = UDim2.new(0, 300, 1, -20)
-Container.Position = UDim2.new(1, -310, 0, 10)
-Container.BackgroundTransparency = 1
-
-local Layout = Instance.new("UIListLayout")
-Layout.Parent = Container
-Layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-Layout.SortOrder = Enum.SortOrder.LayoutOrder
-Layout.Padding = UDim.new(0, 8)
+local Container = ScreenGui:FindFirstChild("Container") or Instance.new("Frame")
+if not Container.Parent then
+    Container.Name = "Container"
+    Container.Parent = ScreenGui
+    Container.Size = UDim2.new(0, 300, 1, -20)
+    Container.Position = UDim2.new(1, -310, 0, 10)
+    Container.BackgroundTransparency = 1
+    
+    local Layout = Instance.new("UIListLayout")
+    Layout.Parent = Container
+    Layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+    Layout.SortOrder = Enum.SortOrder.LayoutOrder
+    Layout.Padding = UDim.new(0, 8)
+end
 
 local Types = {
     Info = {Color = Color3.fromRGB(0, 170, 255), Icon = "rbxassetid://6031275941"},
@@ -29,7 +33,7 @@ local Types = {
 }
 
 function Module:Spawn(data)
-    itle = data.Title or "SYSTEM"
+    local title = data.Title or "SYSTEM"
     local text = data.Text or ""
     local duration = data.Duration or 5
     local nType = data.Type or "Info"
@@ -86,15 +90,17 @@ function Module:Spawn(data)
     TimerBar.BackgroundColor3 = theme.Color
     TimerBar.BorderSizePixel = 0
 
-    TweenService:Create(Frame, TweenInfo.new(0.4), {Transparency = 0}):Play()
+    TweenService:Create(Frame, TweenInfo.new(0.4, Enum.EasingStyle.Quart), {Transparency = 0.1}):Play()
     
     task.spawn(function()
         local t = TweenService:Create(TimerBar, TweenInfo.new(duration, Enum.EasingStyle.Linear), {Size = UDim2.new(0, 0, 0, 2)})
         t:Play()
         task.wait(duration)
-        local h = TweenService:Create(Frame, TweenInfo.new(0.4), {Position = UDim2.new(1.5, 0, 0, 0)})
+        local h = TweenService:Create(Frame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {Position = UDim2.new(1.5, 0, 0, 0), Transparency = 1})
         h:Play()
-        h.Completed:Connect(function() Frame:Destroy() end)
+        h.Completed:Connect(function() 
+            Frame:Destroy() 
+        end)
     end)
 end
 
