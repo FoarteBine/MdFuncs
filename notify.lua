@@ -29,7 +29,7 @@ local Types = {
 }
 
 function Module:Spawn(data)
-    local title = data.Title or "SYSTEM"
+    itle = data.Title or "SYSTEM"
     local text = data.Text or ""
     local duration = data.Duration or 5
     local nType = data.Type or "Info"
@@ -89,7 +89,7 @@ function Module:Spawn(data)
     TweenService:Create(Frame, TweenInfo.new(0.4), {Transparency = 0}):Play()
     
     task.spawn(function()
-        local t = TweenService:Create(TimerBar, TweenInfo.new(duration, Enum.Linear), {Size = UDim2.new(0, 0, 0, 2)})
+        local t = TweenService:Create(TimerBar, TweenInfo.new(duration, Enum.EasingStyle.Linear), {Size = UDim2.new(0, 0, 0, 2)})
         t:Play()
         task.wait(duration)
         local h = TweenService:Create(Frame, TweenInfo.new(0.4), {Position = UDim2.new(1.5, 0, 0, 0)})
